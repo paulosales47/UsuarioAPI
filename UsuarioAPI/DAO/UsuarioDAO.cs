@@ -8,11 +8,16 @@ namespace UsuarioAPI.DAO
 {
     public class UsuarioDAO : IDAO<UsuarioModel>
     {
-        private string _stringConexao;
+        private string _stringConexao { get; set; }
 
         public UsuarioDAO()
         {
-            _stringConexao = ConfigurationManager.ConnectionStrings["CONEXAO"].ToString();
+            _stringConexao = ConfigurationManager.ConnectionStrings["CONEXAO_API"].ToString();
+        }
+
+        public UsuarioDAO(string stringConexao)
+        {
+            _stringConexao = stringConexao;
         }
 
         public IList<UsuarioModel> Busca(UsuarioModel model)
@@ -28,7 +33,9 @@ namespace UsuarioAPI.DAO
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 //ADIÇÃO DOS PARÂMETROS DAS PROCEDURES
-                command.Parameters.Add(new SqlParameter("@ID_USUARIO", model.IdUsuario));
+                if(model.IdUsuario != 0)
+                    command.Parameters.Add(new SqlParameter("@ID_USUARIO", model.IdUsuario));
+
                 command.Parameters.Add(new SqlParameter("@NOME", model.Nome));
 
                 try
@@ -97,7 +104,6 @@ namespace UsuarioAPI.DAO
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
                 //ADIÇÃO DOS PARÂMETROS DAS PROCEDURES
-                command.Parameters.Add(new SqlParameter("@ID_USUARIO", model.IdUsuario));
                 command.Parameters.Add(new SqlParameter("@NOME", model.Nome));
                 command.Parameters.Add(new SqlParameter("@DT_NASCIMENTO", model.DtNascimento));
                 command.Parameters.Add(new SqlParameter("@ATIVO", model.Ativo));
