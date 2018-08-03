@@ -12,7 +12,7 @@ namespace UsuarioAPI.Controllers
     public class UsuarioController : ApiController
     {
         [HttpGet]
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage Get([FromUri]int id)
         {
             try
             {
